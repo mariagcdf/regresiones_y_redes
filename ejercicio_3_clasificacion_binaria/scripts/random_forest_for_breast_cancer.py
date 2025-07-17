@@ -30,7 +30,7 @@ recall = recall_score(y_test, y_pred)
 f1 = f1_score(y_test, y_pred)
 
 # Imprimir métricas
-print("🔍 Resultados del modelo Random Forest:")
+print("Resultados del modelo Random Forest:")
 print(f"Accuracy : {accuracy:.4f}")
 print(f"Precision: {precision:.4f}")
 print(f"Recall   : {recall:.4f}")
