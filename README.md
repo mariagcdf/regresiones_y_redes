@@ -176,16 +176,92 @@ Se ha utilizado el dataset **Breast Cancer Wisconsin** de `scikit-learn`.
 
 ### 🧠 Conclusiones
 
-Ambos modelos obtienen métricas idénticas en test, pero Random Forest sobreajusta en entrenamiento.  
+Ambos modelos obtienen métricas idénticas en test (esto es debido a que este dataset es muy limpio y muy estandar), pero Random Forest sobreajusta en entrenamiento (un 100%).  
 La Regresión Logística generaliza mejor y es más interpretable.
 
 ---
 
-### Propuesta de ejercicio
+### Propuesta futura
 
-Prueba ambos algoritmos sobre datasets más complejos o con más ruido, como:
+Probar ambos algoritmos sobre datasets más complejos o con más ruido, como:
 
 - `creditcard.csv` (detección de fraude)
 - `loan default` o `telco churn`
 - Datos simulados del BSM2 con fallos operacionales
+
+# 📘 Ejercicio 4: Análisis Temporal de Parámetros en EDAR
+
+Este ejercicio corresponde al desarrollo y aplicación de una **librería propia de análisis temporal** centrada en el tratamiento de series temporales reales de una EDAR (Estación Depuradora de Aguas Residuales). El objetivo principal es estudiar la evolución diaria de parámetros críticos como la DBO, utilizando herramientas estadísticas y modelos de predicción como ARIMA.
+
+---
+
+## 📂 Estructura del Proyecto
+
+La librería ha sido implementada en el **repositorio `bsm2-tools` (ya lo entregué cuando se pidió hacer una librería)**, en el módulo `temporal_analysis.py`.  
+El script principal de ejecución es `main_temporal_analyzer.py`, desde donde se cargan los datos y se aplican las funciones paso a paso.
+
+---
+
+## 🧠 Funcionalidades de la librería nueva: temporal_analyzer
+
+Las funciones desarrolladas incluyen:
+
+
+### 📊 Análisis estadístico básico
+- Cálculo de métricas generales (media, desviación, percentiles...).
+- Gráfico de la serie con media móvil de 7 días.
+
+### 🧩 Descomposición de la serie temporal
+- Uso de `seasonal_decompose` para extraer:
+  - Tendencia
+  - Componente estacional
+  - Residuo
+- Personalización del gráfico para lectura clara (etiquetas en español y fechas legibles).
+
+### 📈 ACF y PACF
+- Cálculo y visualización de funciones de autocorrelación y autocorrelación parcial.
+- Control automático del número de `lags` según el tamaño de la serie.
+
+### 🔬 Test de estacionariedad (ADF)
+- Aplicación del test de Dickey-Fuller aumentado (`adfuller`) para evaluar si la serie es estacionaria.
+- Interpolación de valores nulos para evitar errores.
+
+### 🧮 Predicción básica
+- Modelo por defecto basado en la **media histórica** o el **último valor observado**.
+- Generación de predicciones y tabla exportable para el horizonte seleccionado (por defecto, 7 días).
+
+### 🤖 Modelo ARIMA
+- Ajuste automático de parámetros con `auto_arima` de `pmdarima`.
+- Posibilidad de forzar un modelo `ARIMA(p,d,q)` específico con `SARIMAX`.
+- Gráfico de predicción con bandas de confianza (± 95%).
+
+---
+
+## 🧑‍🎓 Reflexión personal del alumno
+
+### 📌 Dificultades encontradas
+- **Estacionalidad débil**: La serie de DBO presentaba gran variabilidad diaria, dificultando la identificación de una componente estacional clara.
+- **Errores que me ocurrienron**:
+  - Crash de `PACF` por número excesivo de lags con pocos datos.
+  - Error de compatibilidad binaria con `pmdarima` al inicio (solucionado actualizando dependencias).
+- **Prediccion plana de ARIMA y con una banda de confianza muy ancha**: Es posible que no esté del todo bien programado. O también puede deberse a:
+  - Poca estacionalidad real.
+  - Falta de tendencia marcada.
+  - Variabilidad que responde a causas exógenas (picos por operación de planta, recirculaciones, etc.)
+
+### ✅ Logros
+- Automatización robusta y reutilizable.
+- Código modular con mensajes claros para cada etapa del análisis.
+- Posibilidad de extender el análisis a cualquier columna del CSV con solo cambiar un parámetro.
+
+---
+
+## 📌 Conclusiones
+
+- El análisis temporal es **útil para entender la estabilidad y evolución de los parámetros clave de una EDAR**.
+- Modelos simples como la media móvil o ARIMA ofrecen información valiosa, pero su efectividad depende de la calidad y cantidad de datos (también de que esté bien programada XD).
+- Esta librería será la base para incluir mejoras futuras útiles en la investigación: análisis multivariante, detección de anomalías, modelado con LSTM...
+
+---
+
 
