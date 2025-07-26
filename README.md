@@ -4,7 +4,7 @@
 
 **Condiciones:**
 - 🟦 Simulación sin fallo (condición normal)
-- 🔴 Simulación con fallo por toxicidad
+- 🔴 Simulación con fallo por toxicidad.
 
 ---
 
